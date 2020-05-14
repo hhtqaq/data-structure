@@ -29,7 +29,7 @@ public class BSTNode<T> {
     /**
      * 比较器
      */
-    private Comparator<T> comparator;
+    private final Comparator<? super T> comparator;
 
 
     /**
@@ -37,12 +37,13 @@ public class BSTNode<T> {
      */
     public BSTNode(T value) {
         this.value = value;
+        comparator = null;
     }
 
     /**
      * 比较器添加
      */
-    public BSTNode(Comparator<T> comparator) {
+    public BSTNode(Comparator<? super T> comparator) {
         this.comparator = comparator;
     }
 
@@ -60,10 +61,19 @@ public class BSTNode<T> {
      */
     public void insertNode(T newValue) {
 
-        if (this.value == null) this.value = newValue;
-
-        if (compare(value,this.value)>0) {
-
+        //如果插入当前结点值为null  将新的值作为根结点
+        if (this.value == null) {
+            this.value = newValue;
+            return;
+        }
+        BSTNode newNode = new BSTNode(this.comparator);
+        //否则将当前值与新的值比较  > 查找  右子树  < 查找左子树
+        if (compare(this.value, newValue) > 0) {
+            this.rightChildNode = newNode;
+            this.rightChildNode.insertNode(newValue);
+        } else {
+            this.leftChildNode = newNode;
+            this.leftChildNode.insertNode(newValue);
         }
     }
 

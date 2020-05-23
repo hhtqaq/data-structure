@@ -10,48 +10,46 @@ import java.util.Comparator;
  */
 public class BSTNode {
 
-    /**
-     * 数据域
-     */
-    private long value;
 
     /**
-     * 左孩子结点
+     * 根结点
      */
-    private BSTNode leftChildNode;
+    TreeNode rootNode;
 
-    /**
-     * 右孩子节点
-     */
-    private BSTNode rightChildNode;
+    static class TreeNode {
+        long val;
+        TreeNode leftNode;
+        TreeNode rightNode;
 
-
-    /**
-     * 有参构造 添加一个根结点
-     */
-    public BSTNode(long value) {
-        this.value = value;
-    }
-
-    /**
-     * 有参构造 添加一个根结点
-     */
-    public BSTNode() {
-    }
-
-    /**
-     * 添加结点
-     */
-    public static void insertNode(BSTNode bstNode, long newValue) {
-        if (bstNode == null) {
-            System.out.println(bstNode);
-            bstNode = new BSTNode(newValue);
-            bstNode.leftChildNode = bstNode.rightChildNode = null;
-        } else if (bstNode.value > newValue) {
-            insertNode(bstNode.rightChildNode, newValue);
-        } else {
-            insertNode(bstNode.leftChildNode, newValue);
+        public TreeNode(long val) {
+            this.val = val;
         }
+    }
+
+
+    /**
+     * 插入节点
+     *
+     * @param newVal
+     */
+    public void insertNode(long newVal) {
+        rootNode = insertNode(rootNode, newVal);
+    }
+
+    public TreeNode insertNode(TreeNode rootNode, long newVal) {
+        /**
+         * 如果根结点为空  创建根结点
+         */
+        if (rootNode == null) {
+            return new TreeNode(newVal);
+        } else if (newVal > rootNode.val) {
+            //如果大于新的值
+            rootNode.rightNode = insertNode(rootNode.rightNode, newVal);
+        } else {
+            rootNode.leftNode = insertNode(rootNode.leftNode, newVal);
+        }
+
+        return rootNode;
     }
 
 
@@ -59,21 +57,15 @@ public class BSTNode {
      * 中序遍历
      */
     public void inTraverseTree(BSTNode rootNode) {
-        if (rootNode != null) {
-            inTraverseTree(rootNode.leftChildNode);
-            System.out.println(rootNode.value);
-            inTraverseTree(rightChildNode.rightChildNode);
-        }
     }
 
 
     public static void main(String[] args) {
-        BSTNode bstNode = new BSTNode(4);
-        insertNode(bstNode, 2);
-        insertNode(bstNode, 3);
-        //insertNode(bstNode, 6);
-        // bstNode.insertNode(4L).insertNode(2L).insertNode(3L).insertNode(6L);
-        //bstNode.inTraverseTree();
+        BSTNode bstNode = new BSTNode();
+        bstNode.insertNode(4);
+        bstNode.insertNode(2);
+        bstNode.insertNode(3);
+        bstNode.insertNode(6);
     }
 
 }

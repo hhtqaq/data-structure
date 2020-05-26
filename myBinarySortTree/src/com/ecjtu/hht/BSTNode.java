@@ -114,6 +114,53 @@ public class BSTNode {
         return inTraverseTree(key);
     }
 
+
+    /**
+     * 删除节点
+     *
+     * @param target 待删除的结点值
+     * @return 1代表删除成功  -1代表不存在
+     */
+    public int removeNode(int target) {
+        return inTraverseTreeRemove(rootNode, rootNode, target);
+    }
+
+    /**
+     * 中序遍历删除某个节点
+     *
+     * @param rootNode   根节点
+     * @param removeNode 待删除节点
+     * @param target     待删除节点的值
+     * @return 1代表删除成功  -1代表不存在
+     */
+    private int inTraverseTreeRemove(TreeNode rootNode, TreeNode removeNode, int target) {
+
+        if (rootNode == null) {
+            return -1;
+        }
+        //如果大于就递归右子树
+        if (target > removeNode.val) {
+            rootNode = removeNode;
+            return inTraverseTreeRemove(rootNode, rootNode.rightNode, target);
+        } else if (target < removeNode.val) {
+            //小于就递归左子树
+            rootNode = removeNode;
+            return inTraverseTreeRemove(rootNode, rootNode.leftNode, target);
+        } else {
+            // 找到了 删除该节点
+            //1 将根节点的左孩子结点指向 待删除节点的左孩子节点
+            if (removeNode.leftNode != null) {
+                rootNode.leftNode = removeNode.leftNode;
+            }
+            //2 将根节点的右孩子节点指向 待删除节点的右孩子节点
+            if (removeNode.rightNode != null) {
+                rootNode.rightNode = removeNode.rightNode;
+            }
+            rootNode = null;
+            return 1;
+        }
+    }
+
     public static void main(String[] args) {
         BSTNode bstNode = new BSTNode();
         bstNode.insertNode(4);
@@ -126,7 +173,13 @@ public class BSTNode {
 
         //中序遍历 就能直接排序了
         bstNode.inTraverseTree();
-        System.out.println(bstNode.search(100));
+
+        bstNode.removeNode(2);
+
+        bstNode.inTraverseTree();
+        System.out.println(bstNode.search(2));
+
+
     }
 
 }

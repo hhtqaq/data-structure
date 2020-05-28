@@ -233,7 +233,11 @@ public class BSTree {
         }
         //找到待删除结点
         TreeNode targetNode = findNode(val);
+        //todo 待删除结点为根节点
         TreeNode parent = findParent(val);
+        if (targetNode == null) {
+            return false;
+        }
         //如果待删除结点为叶子结点   左右子树都为空
         if (targetNode.leftNode == null && targetNode.rightNode == null) {
             //将双亲节点指向为null
@@ -327,7 +331,7 @@ public class BSTree {
         bsTree.inTraverseTree();
 
 
-        bsTree.removeNode(30);
+        System.out.println(bsTree.removeNode(100));
 
         bsTree.inTraverseTree();
 

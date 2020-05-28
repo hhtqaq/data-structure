@@ -218,6 +218,9 @@ public class BSTree {
 
     /**
      * 删除节点
+     * <p>
+     * 功能实现了  但是思路有点绕  应该先判断待删除结点是左孩子还是有孩子
+     * 就不用每个都判断一次
      *
      * @param val 待删除结点的值
      * @return 成功=true   失败=false
@@ -228,29 +231,107 @@ public class BSTree {
         if (rootNode == null) {
             throw new NullPointerException("empty  tree");
         }
+        //找到待删除结点
+        TreeNode targetNode = findNode(val);
+        TreeNode parent = findParent(val);
+        //如果待删除结点为叶子结点   左右子树都为空
+        if (targetNode.leftNode == null && targetNode.rightNode == null) {
+            //将双亲节点指向为null
+            if (targetNode.val == parent.leftNode.val) {
+                parent.leftNode = null;
+                return true;
+            }
+            if (targetNode.val == parent.rightNode.val) {
+                parent.rightNode = null;
+                return true;
+            }
+            //如果待删除结点的左孩子不为空 右孩子为空  直接修改双亲结点的 孩子结点的指向
+        } else if (targetNode.leftNode != null && targetNode.rightNode == null) {
 
+            //如果待删除结点是右子树  修改双亲节点右孩子的引用为待删除结点的左孩子结点
+            if (targetNode.val == parent.rightNode.val) {
+                parent.rightNode = targetNode.leftNode;
+                return true;
+            }
 
+            //如果待删除结点是左子树 修改双亲节点的左孩子引用为待删除结点的左孩子结点
+            if (targetNode.val == parent.leftNode.val) {
+                parent.leftNode = targetNode.leftNode;
+                return true;
+            }
+            //如果待删除结点的右孩子不为空 左孩子为空 直接修改双亲节点的孩子结点的引用
+        } else if (targetNode.leftNode == null) {
+
+            //如果待删除结点是右子树 修改双亲节点的右孩子为待删除结点的右孩子结点
+            if (targetNode.val == parent.rightNode.val) {
+                parent.rightNode = targetNode.rightNode;
+                return true;
+            }
+
+            //如果待删除结点是左子树 修改双亲结点的左孩子为待删除结点的右孩子结点
+            if (targetNode.val == parent.leftNode.val) {
+                parent.leftNode = targetNode.rightNode;
+                return true;
+            }
+            //如果待删除结点的左孩子结点和右孩子结点都不为空
+        } else {
+
+            //遍历待删除结点的左子树 找到最大值 也就是最右节点
+            TreeNode maxNode = targetNode.leftNode;
+            while (maxNode.rightNode != null) {
+                maxNode = maxNode.rightNode;
+            }
+            //如果有最右节点
+            if (targetNode.leftNode != maxNode) {
+                targetNode.val = maxNode.val;
+                maxNode = null;
+                return true;
+            } else {
+
+                //重接右子树
+                targetNode.leftNode.rightNode = targetNode.rightNode;
+                //如果待删除结点为左子树
+                if (parent.leftNode.val == targetNode.val) {
+                    parent.leftNode = targetNode.leftNode;
+                    return true;
+                }
+                //待删除结点为右子树
+                if (parent.rightNode.val == targetNode.val) {
+                    parent.rightNode = targetNode.leftNode;
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
 
     public static void main(String[] args) {
         BSTree bsTree = new BSTree();
-        bsTree.insertNode(4);
-        bsTree.insertNode(2);
-        bsTree.insertNode(3);
-        bsTree.insertNode(6);
-        bsTree.insertNode(9);
-        bsTree.insertNode(10);
-        bsTree.insertNode(1);
-
+        bsTree.insertNode(50);
+        bsTree.insertNode(35);
+        bsTree.insertNode(70);
+        bsTree.insertNode(60);
+        bsTree.insertNode(80);
+        bsTree.insertNode(30);
+        bsTree.insertNode(40);
+        bsTree.insertNode(37);
+        bsTree.insertNode(15);
+        bsTree.insertNode(32);
+        bsTree.insertNode(7);
+        bsTree.insertNode(18);
+        bsTree.insertNode(44);
+        bsTree.insertNode(55);
+        // bsTree.insertNode(63);
         //中序遍历 就能直接排序了
         bsTree.inTraverseTree();
 
-        TreeNode node = bsTree.findNode(2);
-        TreeNode parent = bsTree.findParent(2);
 
-        System.out.println(bsTree.search(2));
+        bsTree.removeNode(30);
+
+        bsTree.inTraverseTree();
+
+        // System.out.println(bsTree.search(2));
 
 
     }

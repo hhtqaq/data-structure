@@ -240,6 +240,11 @@ public class BSTree {
         }
         //如果待删除结点为叶子结点   左右子树都为空
         if (targetNode.leftNode == null && targetNode.rightNode == null) {
+            //叶子结点 且没有双亲节点 代表只有一个节点
+            if (parent == null) {
+                targetNode = null;
+                return true;
+            }
             //将双亲节点指向为null
             if (targetNode.val == parent.leftNode.val) {
                 parent.leftNode = null;
@@ -252,6 +257,11 @@ public class BSTree {
             //如果待删除结点的左孩子不为空 右孩子为空  直接修改双亲结点的 孩子结点的指向
         } else if (targetNode.leftNode != null && targetNode.rightNode == null) {
 
+            //如果删除的为根节点  将左孩子直接转为根节点
+            if (parent == null) {
+                rootNode = targetNode.leftNode;
+                return true;
+            }
             //如果待删除结点是右子树  修改双亲节点右孩子的引用为待删除结点的左孩子结点
             if (targetNode.val == parent.rightNode.val) {
                 parent.rightNode = targetNode.leftNode;
@@ -265,6 +275,12 @@ public class BSTree {
             }
             //如果待删除结点的右孩子不为空 左孩子为空 直接修改双亲节点的孩子结点的引用
         } else if (targetNode.leftNode == null) {
+
+            //如果删除的为根节点 将右孩子直接转为根节点
+            if (parent == null) {
+                rootNode = targetNode.rightNode;
+                return true;
+            }
 
             //如果待删除结点是右子树 修改双亲节点的右孩子为待删除结点的右孩子结点
             if (targetNode.val == parent.rightNode.val) {
@@ -280,6 +296,7 @@ public class BSTree {
             //如果待删除结点的左孩子结点和右孩子结点都不为空
         } else {
 
+
             //遍历待删除结点的左子树 找到最大值 也就是最右节点
             TreeNode maxNode = targetNode.leftNode;
             while (maxNode.rightNode != null) {
@@ -287,13 +304,18 @@ public class BSTree {
             }
             //如果有最右节点
             if (targetNode.leftNode != maxNode) {
+                //将最右节点改为null
+                TreeNode parent1 = findParent(maxNode.val);
+                parent1.rightNode = null;
                 targetNode.val = maxNode.val;
-                maxNode = null;
                 return true;
             } else {
-
                 //重接右子树
                 targetNode.leftNode.rightNode = targetNode.rightNode;
+                //如果删除的为根节点
+                if (parent == null) {
+                    return true;
+                }
                 //如果待删除结点为左子树
                 if (parent.leftNode.val == targetNode.val) {
                     parent.leftNode = targetNode.leftNode;
@@ -318,20 +340,20 @@ public class BSTree {
         bsTree.insertNode(60);
         bsTree.insertNode(80);
         bsTree.insertNode(30);
-        bsTree.insertNode(40);
-        bsTree.insertNode(37);
+      //  bsTree.insertNode(40);
+      //  bsTree.insertNode(37);
         bsTree.insertNode(15);
         bsTree.insertNode(32);
         bsTree.insertNode(7);
         bsTree.insertNode(18);
-        bsTree.insertNode(44);
+       // bsTree.insertNode(44);
         bsTree.insertNode(55);
         // bsTree.insertNode(63);
         //中序遍历 就能直接排序了
         bsTree.inTraverseTree();
 
 
-        System.out.println(bsTree.removeNode(100));
+        System.out.println(bsTree.removeNode(50));
 
         bsTree.inTraverseTree();
 

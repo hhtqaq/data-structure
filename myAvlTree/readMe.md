@@ -44,14 +44,21 @@ Tree），因由前苏联数学家Adelson-Velskii和Landis提出，所以又称�
 
    - 【算法思想】
    
-    1.二叉排序树的插入
-    2.插入后高度修改为左右最大子树高度+1
-    3.判断左右子树高度差是否小于2，判断结点是否失衡
-    4.当前结点node失衡：
-    插入发生在左子树的左结点，单右旋singleRotateRight(node)
-    插入发生在左子树的右结点，双右旋doubleRotateRight(node)
-    插入发生在右子树的右结点，右旋singleRotateLeft(node)
-    插入发生在右子树的左结点，右旋doubleRotateLeft(node)
+     1.二叉排序树的插入
+    
+     2.插入后高度修改为左右最大子树高度+1
+     
+     3.判断左右子树高度差是否小于2，判断结点是否失衡
+     
+     4.当前结点node失衡：
+     
+     插入发生在左子树的左结点，单右旋singleRotateRight(node)
+      
+     插入发生在左子树的右结点，双右旋doubleRotateRight(node)
+    
+     插入发生在右子树的右结点，右旋singleRotateLeft(node)
+    
+     插入发生在右子树的左结点，右旋doubleRotateLeft(node)
 
     
 **说明：**

@@ -120,14 +120,76 @@ public class AvlTree {
 
         //根据平衡因子判断旋转情况（不存在=3的情况 ）
 
-        // >1说明是插入左子树的左孩子结点  符合LL型 右旋
+        // >1说明是插入左子树，rootNode.leftNode.val > val代表是插入左孩子结点  符合LL型 右旋
         if (balance > 1 && rootNode.leftNode.val > val) {
             //右旋
             return rightRotate(rootNode);
         }
 
+        // >1说明是插入左子树，rootNode.leftNode.val < val代表是插入右孩子结点   符合LR型   先左旋变成LL型再右旋
+        if (balance > 1 && rootNode.leftNode.val < val) {
+            //先将左子树左旋转为LL型  再右旋
+            rootNode.leftNode = leftRotate(rootNode.leftNode);
+            return rightRotate(rootNode);
+        }
 
+        // <-1说明是插入右子树，rootNode.rightNode.val < val代表是插入右孩子结点   符合RR型   左旋
+        if (balance < -1 && rootNode.rightNode.val < val) {
+            return leftRotate(rootNode);
+        }
+
+        // <-1说明是插入右子树，rootNode.rightNode.val > val代表是插入左孩子结点   符合RL型   右旋变成RR型在左旋
+        if (balance < -1 && rootNode.rightNode.val > val) {
+            rootNode.rightNode = rightRotate(rootNode.rightNode);
+            return leftRotate(rootNode);
+        }
         return rootNode;
+    }
+
+    /**
+     * RR型  左旋
+     *
+     * @param y 带旋转的结点
+     * @return 旋转后结点
+     */
+    private TreeNode leftRotate(TreeNode y) {
+        System.out.println("左旋");
+        TreeNode x = y.rightNode;
+        TreeNode t = x.leftNode;
+        x.leftNode = y;
+        y.rightNode = t;
+        //修改高度
+        y.height = max(height(y.leftNode), height(y.rightNode)) + 1;
+        x.height = max(height(x.leftNode), height(x.rightNode)) + 1;
+        return x;
+    }
+
+    /**
+     * LR 左右旋转
+     *
+     * @param y 待旋转结点
+     * @return 旋转后的结点
+     */
+    private TreeNode leftRightRotate(TreeNode y) {
+        return y;
+    }
+
+    /**
+     * LL 右旋
+     *
+     * @param y 待旋转结点
+     * @return 旋转后的节点
+     */
+    private TreeNode rightRotate(TreeNode y) {
+        System.out.println("右旋");
+        TreeNode x = y.leftNode;
+        TreeNode t = x.rightNode;
+        x.rightNode = y;
+        y.leftNode = t;
+        //更新高度
+        y.height = max(height(y.leftNode), height(y.rightNode)) + 1;
+        x.height = max(height(x.leftNode), height(x.rightNode)) + 1;
+        return x;
     }
 
     /**
@@ -152,22 +214,6 @@ public class AvlTree {
         inTraverseTree(treeNode.rightNode);
     }
 
-    /**
-     * 右旋
-     *
-     * @param y 待旋转结点
-     * @return 旋转后的节点
-     */
-    private TreeNode rightRotate(TreeNode y) {
-        TreeNode x = y.leftNode;
-        TreeNode t = x.rightNode;
-        x.rightNode = y;
-        y.leftNode = t;
-        //更新高度
-        y.height = max(height(y.leftNode), height(y.rightNode)) + 1;
-        x.height = max(height(x.leftNode), height(x.rightNode)) + 1;
-        return x;
-    }
 
     /**
      * 查找key是否在该颗二叉查找树中
@@ -213,9 +259,12 @@ public class AvlTree {
         AvlTree avlTree = new AvlTree();
         avlTree.insertNode(31);
         avlTree.insertNode(25);
+        avlTree.insertNode(47);
         avlTree.insertNode(16);
+        avlTree.insertNode(28);
+        avlTree.insertNode(26);
         System.out.println(avlTree.height());
-        System.out.println(avlTree.search(16));
+        System.out.println(avlTree.search(47));
     }
 
 }

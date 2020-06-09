@@ -1,4 +1,4 @@
-##二叉排序树
+## 二叉排序树
 ### 1.1 介绍
 &emsp;&emsp;二叉排序树（Binary Sort Tree） 又称为二叉查找树（Binary Search Tree），它是一种对排序和查找都很有用的特殊二叉树。
 

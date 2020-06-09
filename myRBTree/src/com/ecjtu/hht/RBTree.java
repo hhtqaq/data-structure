@@ -49,7 +49,7 @@ public class RBTree<T extends Comparable<T>> {
     }
 
     private boolean isRed(RBTNode<T> node) {
-        return ((node != null) && (node.color == RED)) ? true : false;
+        return (node != null) && (node.color == RED);
     }
 
     private boolean isBlack(RBTNode<T> node) {
@@ -252,10 +252,10 @@ public class RBTree<T extends Comparable<T>> {
      *      px                              px
      *     /                               /
      *    x                               y
-     *   /  \      --(左旋)-.           / \                #
-     *  lx   y                          x  ry
-     *     /   \                       /  \
-     *    ly   ry                     lx  ly
+     *   /  \      --(左旋)-.           /  \                #
+     *  lx   y                          x   ry
+     *     /   \                      /  \
+     *    ly   ry                    lx  ly
      *
      *
      */
@@ -349,7 +349,7 @@ public class RBTree<T extends Comparable<T>> {
             if (parent == gparent.left) {
                 // Case 1条件：叔叔节点是红色
                 RBTNode<T> uncle = gparent.right;
-                if ((uncle != null) && isRed(uncle)) {
+                if (isRed(uncle)) {
                     setBlack(uncle);
                     setBlack(parent);
                     setRed(gparent);
@@ -373,7 +373,7 @@ public class RBTree<T extends Comparable<T>> {
             } else {    //若“z的父节点”是“z的祖父节点的右孩子”
                 // Case 1条件：叔叔节点是红色
                 RBTNode<T> uncle = gparent.left;
-                if ((uncle != null) && isRed(uncle)) {
+                if (isRed(uncle)) {
                     setBlack(uncle);
                     setBlack(parent);
                     setRed(gparent);
@@ -412,7 +412,7 @@ public class RBTree<T extends Comparable<T>> {
         RBTNode<T> y = null;
         RBTNode<T> x = this.mRoot;
 
-        // 1. 将红黑树当作一颗二叉查找树，将节点添加到二叉查找树中。
+        // 1. 将红黑树当作一颗二叉查找树，将节点添加到二叉查找树中。  先找到待插入结点位置
         while (x != null) {
             y = x;
             cmp = node.key.compareTo(x.key);
@@ -422,6 +422,7 @@ public class RBTree<T extends Comparable<T>> {
                 x = x.right;
         }
 
+        //插入结点
         node.parent = y;
         if (y != null) {
             cmp = node.key.compareTo(y.key);
@@ -694,5 +695,9 @@ public class RBTree<T extends Comparable<T>> {
     public void print() {
         if (mRoot != null)
             print(mRoot, mRoot.key, 0);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("2000000000数据的时间复杂度："+Math.log(2000000000)/Math.log(2));
     }
 }
